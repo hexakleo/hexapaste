@@ -1,118 +1,121 @@
 <!DOCTYPE html>
 <html lang="es" data-theme="dark">
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>hexapaste</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
     <style>
-      :root {
-        --background-color: #000000;
-        --color: #ffffff;
-        --primary: #1a5fb4;
-        --primary-hover: #1c71d8;
-      }
-
-      body {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-        background-color: var(--background-color);
-        color: var(--color);
-      }
-
-      .container {
-        text-align: center;
-        padding: 2rem;
-        background-color: rgba(255, 255, 255, 0.05);
-        border-radius: 8px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      }
-
-      h1 {
-        margin-bottom: 2rem;
-        font-size: 2.5rem;
-        text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-      }
-
-      #copyButton {
-        background-color: var(--primary);
-        color: var(--color);
-        border: none;
-        padding: 0.75rem 1.5rem;
-        font-size: 1.1rem;
-        border-radius: 25px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 0 15px rgba(26, 95, 180, 0.5);
-      }
-
-      #copyButton:hover {
-        background-color: var(--primary-hover);
-        transform: translateY(-2px);
-        box-shadow: 0 0 20px rgba(28, 113, 216, 0.7);
-      }
-
-      #paramDisplay {
-        margin-top: 2rem;
-        font-style: italic;
-        opacity: 0.7;
-      }
-
-      #notification {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        padding: 1rem;
-        background-color: var(--primary);
-        color: var(--color);
-        border-radius: 8px;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-      }
+        :root {
+            --background-color: #000000;
+            --color: #ffffff;
+            --primary: #1a5fb4;
+            --primary-hover: #1c71d8;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: var(--background-color);
+            color: var(--color);
+        }
+        .container {
+            text-align: center;
+            padding: 2rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+        #copyButton {
+            background-color: var(--primary);
+            color: var(--color);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-size: 1.1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(26, 95, 180, 0.5);
+        }
+        #copyButton:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(28, 113, 216, 0.7);
+        }
+        #paramDisplay, #browserDisplay {
+            margin-top: 2rem;
+            font-style: italic;
+            opacity: 0.7;
+        }
+        #notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem;
+            background-color: var(--primary);
+            color: var(--color);
+            border-radius: 8px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
     </style>
-  </head>
-  <body>
+</head>
+<body>
     <div class="container">
-      <h1>hexapaste</h1>
-      <button id="copyButton">copy</button>
-      <p id="paramDisplay"></p>
+        <h1>hexa-paste</h1>
+        <button id="copyButton">copy</button>
+        <p id="paramDisplay"></p>
+        <p id="browserDisplay"></p>
     </div>
-    <div id="notification">copied!</div>
+    <div id="notification">copied</div>
+
     <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js"></script>
     <script>
-      function getParameterByName(name, url = window.location.href) {
-        name = name.replace(/[\[\]]/g, '\\$&');
-        var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-          results = regex.exec(url);
-        if (!results) return null;
-        if (!results[2]) return '';
-        return decodeURIComponent(results[2].replace(/\+/g, ' '));
-      }
-      document.addEventListener('DOMContentLoaded', function() {
-        var content = getParameterByName('c');
-        var paramDisplay = document.getElementById('paramDisplay');
-        var copyButton = document.getElementById('copyButton');
-        var notification = document.getElementById('notification');
-        if (content) {
-          paramDisplay.textContent = `content: "${content}"`;
-          new ClipboardJS('#copyButton', {
-            text: function() {
-              return content;
-            }
-          });
-          copyButton.addEventListener('click', function() {
-            notification.style.opacity = '1';
-            setTimeout(function() {
-              notification.style.opacity = '0';
-            }, 2000);
-          });
-        } else {
-          copyButton.disabled = true;
-          paramDisplay.textContent = 'no content to copy. showed by hexakleo';
+        function getParameterByName(name, url = window.location.href) {
+            name = name.replace(/[\[\]]/g, '\\$&');
+            var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, ' '));
         }
-      });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var content = getParameterByName('c');
+            var browser = getParameterByName('b');
+            var paramDisplay = document.getElementById('paramDisplay');
+            var browserDisplay = document.getElementById('browserDisplay');
+            var copyButton = document.getElementById('copyButton');
+            var notification = document.getElementById('notification');
+
+            if (content) {
+                paramDisplay.textContent = `content: "${content}"`;
+                new ClipboardJS('#copyButton', {
+                    text: function() {
+                        return content;
+                    }
+                });
+                
+                copyButton.addEventListener('click', function() {
+                    notification.style.opacity = '1';
+                    setTimeout(function() {
+                        notification.style.opacity = '0';
+                    }, 2000);
+                });
+            } else {
+                copyButton.disabled = true;
+                paramDisplay.textContent = 'no content to copy.';
+            }
+
+            if (browser) {
+                browserDisplay.textContent = `browser: ${browser}`;
+            }
+        });
     </script>
-  </body>
+</body>
 </html>
