@@ -96,7 +96,7 @@
         var copyButton = document.getElementById('copyButton');
         var notification = document.getElementById('notification');
         if (content) {
-          paramDisplay.textContent = `Parameter content: "${content}"`;
+          paramDisplay.textContent = `content: "${content}"`;
           new ClipboardJS('#copyButton', {
             text: function() {
               return content;
